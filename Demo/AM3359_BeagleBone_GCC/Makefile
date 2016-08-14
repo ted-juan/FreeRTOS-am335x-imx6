@@ -62,9 +62,9 @@ TEXT_BASE = 0x80300000
 # use this to print debug messages for task interleaving
 DBGMSG=NO
 
-CC=/home/henrifo/Nedlastinger/gcc-arm-none-eabi-4_8-2013q4/bin/arm-none-eabi-gcc
-OBJCOPY=/home/henrifo/Nedlastinger/gcc-arm-none-eabi-4_8-2013q4/bin/arm-none-eabi-objcopy
-ARCH=/home/henrifo/Nedlastinger/gcc-arm-none-eabi-4_8-2013q4/bin/arm-none-eabi-ar
+CC=arm-none-eabi-gcc
+OBJCOPY=arm-none-eabi-objcopy
+ARCH=arm-none-eabi-ar
 CRT0=boot.s
 WARNINGS=-Wall -Wextra -Wshadow -Wpointer-arith -Wbad-function-cast -Wcast-align -Wsign-compare \
 		-Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wunused

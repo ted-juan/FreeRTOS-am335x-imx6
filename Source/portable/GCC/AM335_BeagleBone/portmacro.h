@@ -77,6 +77,11 @@ extern "C" {
 #define portSTACK_TYPE	unsigned portLONG
 #define portBASE_TYPE	portLONG
 
+typedef portSTACK_TYPE  StackType_t;
+typedef long BaseType_t;
+typedef unsigned long UBaseType_t;
+typedef uint32_t TickType_t;
+
 #if( configUSE_16_BIT_TICKS == 1 )
 	typedef unsigned portSHORT portTickType;
 	#define portMAX_DELAY ( portTickType ) 0xffff
@@ -88,7 +93,7 @@ extern "C" {
 
 /* Architecture specifics. */
 #define portSTACK_GROWTH			( -1 )
-#define portTICK_RATE_MS			( ( portTickType ) 1000 / configTICK_RATE_HZ )		
+#define portTICK_PERIOD_MS			( ( portTickType ) 1000 / configTICK_RATE_HZ )		
 #define portBYTE_ALIGNMENT			8
 #define portNOP()					__asm volatile ( "NOP" );
 /*-----------------------------------------------------------*/	
