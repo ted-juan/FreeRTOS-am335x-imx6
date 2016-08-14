@@ -1,8 +1,9 @@
-BBBFreeRTOS
+FreeRTOS-am335x
 ===========
 
-FreeRTOS for BeagleBone Black
+FreeRTOS for AM335X BBB-like board
 
+clone from https://github.com/henfos/BBBFreeRTOS
 
 ----------------------
 Makefile located in in Demo/AM3359_BeagleBone_GCC/
