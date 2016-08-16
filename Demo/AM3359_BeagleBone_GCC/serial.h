@@ -4,6 +4,7 @@
 #define UART_CLK			(48000000)
 #define UART0_BAUDRATE			115200
 #define UART4_BAUDRATE			38400
+#define SERIAL_BAUDRATE			115200
 
 #define FCR_FIFO_EN     0x01		/* Fifo enable */
 #define FCR_RXSR        0x02		/* Receiver soft reset */

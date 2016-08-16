@@ -130,10 +130,10 @@ $(TARGET).elf : $(ARM_OBJ) $(THUMB_OBJ) $(CRT0) Makefile
 	$(CC) $(CFLAGS) $(ARM_OBJ) $(THUMB_OBJ) -nostartfiles $(CRT0) $(LINKER_FLAGS)
 
 $(THUMB_OBJ) : %.o : %.c $(LDSCRIPT) Makefile
-	$(CC) -c $(THUMB_FLAGS) $(CFLAGS) $< -o $@
+	$(CC) -g -c $(THUMB_FLAGS) $(CFLAGS) $< -o $@
 
 $(ARM_OBJ) : %.o : %.c $(LDSCRIPT) Makefile
-	$(CC) -c $(CFLAGS) $< -o $@
+	$(CC) -g -c $(CFLAGS) $< -o $@
 
 clean :
 	rm -rf $(ARM_OBJ) $(THUMB_OBJ)

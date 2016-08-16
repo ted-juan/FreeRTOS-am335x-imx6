@@ -2,14 +2,14 @@
 #define omap3_h
 /*******************************************************************************
 omap3h - Register definitions for TI BeagleBoard C4
-           
-THE SOFTWARE IS DELIVERED "AS IS" WITHOUT WARRANTY OR CONDITION OF ANY KIND, 
-EITHER EXPRESS, IMPLIED OR STATUTORY. THIS INCLUDES WITHOUT LIMITATION ANY 
-WARRANTY OR CONDITION WITH RESPECT TO MERCHANTABILITY OR FITNESS FOR ANY 
-PARTICULAR PURPOSE, OR AGAINST THE INFRINGEMENTS OF INTELLECTUAL PROPERTY RIGHTS 
+
+THE SOFTWARE IS DELIVERED "AS IS" WITHOUT WARRANTY OR CONDITION OF ANY KIND,
+EITHER EXPRESS, IMPLIED OR STATUTORY. THIS INCLUDES WITHOUT LIMITATION ANY
+WARRANTY OR CONDITION WITH RESPECT TO MERCHANTABILITY OR FITNESS FOR ANY
+PARTICULAR PURPOSE, OR AGAINST THE INFRINGEMENTS OF INTELLECTUAL PROPERTY RIGHTS
 OF OTHERS.
-           
-This file may be freely used for commercial and non-commercial applications, 
+
+This file may be freely used for commercial and non-commercial applications,
 including being redistributed with any tools.
 
 If you find a problem with the file, please report it so that it can be fixed.
@@ -104,8 +104,8 @@ extern short channel3_flag;
 #define GPTI_IRQSTATUS			0x28
 #define GPTI_IRQENABLE_SET		0x2C
 #define GPTI_IRQSTATUS_CLR		0x30
-#define GPTI_IRQWAKEEN			0x34			
-#define GPTI_TCLR				0x38	
+#define GPTI_IRQWAKEEN			0x34
+#define GPTI_TCLR				0x38
 #define GPTI_TCRR				0x3C
 #define GPTI_TLDR				0x40
 #define GPTI_TTGR				0x44
@@ -323,7 +323,7 @@ extern short channel3_flag;
 #define GPIO_DEBOUNCINGTIME		0x154
 #define GPIO_CLEARDATAOUT		0x190
 #define GPIO_SETDATAOUT			0x194
- 
+
 
 
 /* Pin definitions */
@@ -362,9 +362,14 @@ extern short channel3_flag;
 
 /* Serial Configuration (UART 0)*/
 /* modified */
-//#define SERIAL_BASE 		    0x44e09000
 #define UART0_BASE 		    0x44E09000
-#define UART4_BASE		    0x481A8000 
+#define UART1_BASE 		    0x48022000
+#define UART2_BASE 		    0x48024000
+#define UART3_BASE 		    0x481A6000
+#define UART4_BASE		    0x481A8000
+#define UART5_BASE		    0x481AA000
+
+#define SERIAL_BASE                 UART1_BASE
 
 /* Serial Offsets */
 #define DLL_REG					0x000
@@ -410,4 +415,13 @@ extern short channel3_flag;
 
 #define PRCM_REG                0x44e00000
 #define CM_PER_GPIO1_CLKCTRL    0xAC
+
+#define UART0_CLK_CTRL	(CM_WKUP + 0xB4)
+#define UART1_CLK_CTRL	(PRCM_REG + 0x6C)
+#define UART2_CLK_CTRL	(PRCM_REG + 0x70)
+#define UART3_CLK_CTRL	(PRCM_REG + 0x74)
+#define UART4_CLK_CTRL	(PRCM_REG + 0x78)
+
+#define SERIAL_CLK_CTRL    UART1_CLK_CTRL
+
 #endif /* omap3_h */

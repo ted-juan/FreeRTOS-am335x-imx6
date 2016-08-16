@@ -33,9 +33,9 @@
     FreeRTOS is distributed in the hope that it will be useful, but WITHOUT
     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
     FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-    more details. You should have received a copy of the GNU General Public 
-    License and the FreeRTOS license exception along with FreeRTOS; if not it 
-    can be viewed here: http://www.freertos.org/a00114.html and also obtained 
+    more details. You should have received a copy of the GNU General Public
+    License and the FreeRTOS license exception along with FreeRTOS; if not it
+    can be viewed here: http://www.freertos.org/a00114.html and also obtained
     by writing to Richard Barry, contact details for whom are available on the
     FreeRTOS WEB site.
 
@@ -51,9 +51,9 @@
     licensing and training services.
 */
 
-/* 
+/*
 	NOTE : Tasks run in system mode and the scheduler runs in Supervisor mode.
-	The processor MUST be in supervisor mode when vTaskStartScheduler is 
+	The processor MUST be in supervisor mode when vTaskStartScheduler is
 	called.  The demo applications included in the FreeRTOS.org download switch
 	to supervisor mode prior to main being called.  If you are not using one of
 	these demo application projects then ensure Supervisor mode is used.
@@ -87,165 +87,56 @@ static void vRespTask1(void *pvParameters)
 
 	uint32_t xLastWakeTime;
 	const uint32_t xFrequency = 1;
+
+	pvParameters= pvParameters; /* avoid compile warning */
+
 	// Initialise the xLastWakeTime variable with the current time.
 	xLastWakeTime = xTaskGetTickCount();
-	int i=0;
-	serial_puts(UART0_BASE,"task1\n");
-	(*(REG32(GPIO0_BASE + GPIO_SETDATAOUT))) = PIN5|PIN4|PIN3;
+	serial_puts(SERIAL_BASE, "task1\n");
+
 	while(1)
 	{
-		if (channel1_flag == TRUE)	{
-			channel1_flag = FALSE;
-			i=0xAF;
-			while(i--){;}
-			(*(REG32(GPIO0_BASE + GPIO_CLEARDATAOUT))) = PIN5;
-			i=0xAF;
-			while(i--){;}
-			(*(REG32(GPIO0_BASE + GPIO_SETDATAOUT))) = PIN5;
-			//serial_puts(UART0_BASE,"r1\n");
-		}
-		if (channel2_flag == TRUE)	{
-			channel2_flag = FALSE;
-			i=0xAF;
-			while(i--){;}
-			(*(REG32(GPIO0_BASE + GPIO_CLEARDATAOUT))) = PIN4;
-			i=0xAF;
-			while(i--){;}
-			(*(REG32(GPIO0_BASE + GPIO_SETDATAOUT))) = PIN4;
-			//serial_puts(UART0_BASE,"r2\n");			
-		}
-		if (channel3_flag == TRUE)	{
-			channel3_flag = FALSE;
-			i=0xAF;
-			while(i--){;}
-			(*(REG32(GPIO0_BASE + GPIO_CLEARDATAOUT))) = PIN3;
-			i=0xAF;
-			while(i--){;}
-			(*(REG32(GPIO0_BASE + GPIO_SETDATAOUT))) = PIN3;
-			//serial_puts(UART0_BASE,"r3\r\n");
-		}
+		serial_puts(SERIAL_BASE,"TASK1\n");
 		vTaskDelayUntil(&xLastWakeTime, xFrequency);
-		//vTaskDelay(1);	
+		//vTaskDelay(1);
 	}
 
 }
 
-/*static void vRespTask2(void *pvParameters)
-{
-	uint32_t xLastWakeTime;
-	const uint32_t xFrequency = 1;
-	// Initialise the xLastWakeTime variable with the current time.
-	xLastWakeTime = xTaskGetTickCount();
 
-	const portTickType msDelay = 1;
-	unsigned int c,ret,i;
-	char buf[3];
-	serial_puts(UART0_BASE,"task2\n");
-	(*(REG32(GPIO0_BASE + GPIO_SETDATAOUT))) |= PIN4;
+static void vRespTask2(void *pvParameters)
+{
+	pvParameters= pvParameters; /* avoid compile warning */
+	serial_puts(SERIAL_BASE,"task2\n");
+
 	while(1)
 	{
-		if (channel2_flag == TRUE)	{
-			channel2_flag = FALSE;
-			i=0x1FF;
-			while(i--){;}
-			(*(REG32(GPIO0_BASE + GPIO_CLEARDATAOUT))) |= PIN4;
-			i=0xAF;
-			while(i--){;}
-			(*(REG32(GPIO0_BASE + GPIO_SETDATAOUT))) |= PIN4;
-			//serial_puts(UART0_BASE,"r2\n");			
-		}
-		(*(REG32(GPIO0_BASE + GPIO_SETDATAOUT))) |= PIN4;
-		//vTaskDelayUntil(&xLastWakeTime, xFrequency);
-		vTaskDelay(1);
-	}
-}
-
-static void vRespTask3(void *pvParameters)
-{
-	uint32_t xLastWakeTime;
-	const uint32_t xFrequency = 1;
-	// Initialise the xLastWakeTime variable with the current time.
-	xLastWakeTime = xTaskGetTickCount();
-
-	const portTickType msDelay = 1;
-	unsigned int i;
-	serial_puts(UART0_BASE,"task3\r\n");
-	(*(REG32(GPIO0_BASE + GPIO_SETDATAOUT))) |= PIN3;
-	while(1)
-	{
-		if (channel3_flag == TRUE)	{
-			channel3_flag = FALSE;
-			i=0x1FF;
-			while(i--){;}
-			(*(REG32(GPIO0_BASE + GPIO_CLEARDATAOUT))) |= PIN3;
-			i=0xAF;
-			while(i--){;}
-			(*(REG32(GPIO0_BASE + GPIO_SETDATAOUT))) |= PIN3;
-			//serial_puts(UART0_BASE,"r3\r\n");
-		}
-		(*(REG32(GPIO0_BASE + GPIO_SETDATAOUT))) |= PIN3;
-		//vTaskDelayUntil(&xLastWakeTime, xFrequency);
-		vTaskDelay(1);
-	}
-}*/
-
-static void vBlink(void *pvParameters)
-{
-	const portTickType msDelay = 500;
-	unsigned int i;
-	serial_puts(UART0_BASE,"blinktask\n");
-	while(1)
-	{
-
-			(*(REG32(GPIO1_BASE + GPIO_CLEARDATAOUT))) |= PIN21;
-			i=0x1FFF;
-			while(i--){;}
-			(*(REG32(GPIO1_BASE + GPIO_SETDATAOUT))) |= PIN21;
-			i=0x1FFF;
-			while(i--){;}
+		serial_puts(SERIAL_BASE,"TASK2\n");
 	}
 }
 
 
 void DATA_ABORT()	{
-	serial_puts(UART0_BASE,"omg dataabort...\n");
+	serial_puts(SERIAL_BASE,"omg dataabort...\n");
 	while(1){}
 }
 
 /*
- * Starts all the other tasks, then starts the scheduler. 
+ * Starts all the other tasks, then starts the scheduler.
  */
 int main( void )
-{   
+{
 
 	/* Initialise the LED outputs */
 	prvSetupHardware();
 
 	//INIT SERIAL
-	init_serial(UART0_BASE);
-	//init_serial(UART4_BASE);
-	//INIT SERIAL END
-	serial_puts(UART0_BASE,"Starting FreeRTOS\n");
-	/*unsigned int test = (*(REG32(CONTROL_MODULE + 0x95c)));
-	i = sprintf(buf,"%x\n",test);
-	buf[i]='\0';
-	serial_puts(buf);*/
-	/*while(1)	{
-		while ((*(REG32(UART0_BASE + 0x20)))==0){;}
-			c = (*(REG32(UART0_BASE + 0x00)));
-		serial_putc(UART0_BASE,c);	
-	}*/
-
+	init_serial(SERIAL_BASE);
+	serial_puts(SERIAL_BASE,"Starting FreeRTOS\n");
 
 	xTaskCreate(vRespTask1,  ( signed char * ) "resp1", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 3, ( xTaskHandle * ) NULL);
 
-	/*xTaskCreate(vRespTask2,  ( signed char * ) "resp2", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 3, ( xTaskHandle * ) NULL);
-
-	xTaskCreate(vRespTask3,  ( signed char * ) "resp3", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 3, ( xTaskHandle * ) NULL);*/
-
-	xTaskCreate(vBlink,  ( signed char * ) "BLINK1", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1, ( xTaskHandle * ) NULL);
-	xTaskCreate(vBlink,  ( signed char * ) "BLINK2", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1, ( xTaskHandle * ) NULL);
-	xTaskCreate(vBlink,  ( signed char * ) "BLINK3", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1, ( xTaskHandle * ) NULL);
+	xTaskCreate(vRespTask2,  ( signed char * ) "resp2", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1, ( xTaskHandle * ) NULL);
 
 	vTaskStartScheduler();
 
@@ -259,41 +150,18 @@ static void prvSetupHardware( void )
 
 	/* Initialize GPIOs */
 
-    /* BONE */
-    /* Enabling the GPIO0 and GPIO1 clocks */
-    (*(REG32(PRCM_REG + CM_PER_GPIO1_CLKCTRL))) =0x2;
-    (*(REG32(CM_WKUP + 0x8))) =0x2;
-    /* Enabling the UART0 and UART4 clocks */
-    (*(REG32(CM_WKUP + 0xB4))) =0x2;
-    (*(REG32(PRCM_REG + 0x78))) =0x2;
-	
-	//Setup GPIO pins
-	(*(REG32(CONTROL_MODULE + 0x95c))) = 0x17;
-	(*(REG32(CONTROL_MODULE + 0x958))) = 0x17;
-	(*(REG32(CONTROL_MODULE + 0x954))) = 0x17;
-	(*(REG32(CONTROL_MODULE + 0x950))) = 0x27;
-	(*(REG32(CONTROL_MODULE + 0x984))) = 0x27;
-	(*(REG32(CONTROL_MODULE + 0x980))) = 0x27;
-	//Setup UART4 pins
-	(*(REG32(CONTROL_MODULE + 0x870))) = 0x26;
-	(*(REG32(CONTROL_MODULE + 0x874))) = 0x06;
+	/* Enabling the UART clocks */
+	(*(REG32(SERIAL_CLK_CTRL))) =0x2;
 
-	
+        /* Setup GPIO mux */
+	// ref: uboot board/ti/am335x/mux.c
+        (*(REG32(CONTROL_MODULE + 0x860))) = 0x3f; /* Buzzer,  gpmc_a8 pin, GPIO1_24 */
 
-    /* Controlling the output capability */
-    (*(REG32(GPIO1_BASE+GPIO_OE))) = ~(PIN21|PIN22|PIN23|PIN24);  
+        /* Setup GPIO direction */
+        (*(REG32(GPIO1_BASE+GPIO_OE))) = ~(PIN24);
 
+        /* Switch off the leds */
+        (*(REG32(GPIO1_BASE+GPIO_CLEARDATAOUT))) = PIN24;
 
-	(*(REG32(GPIO0_BASE+0x30))) |= (PIN2 | PIN14 | PIN15);  //IRQ Status  
-	(*(REG32(GPIO0_BASE+0x34))) |= (PIN2 | PIN14 | PIN15);  //IRQ Status  set
-	(*(REG32(GPIO0_BASE+0x14C))) |= (PIN2 | PIN14 | PIN15);  //Falling edge
-	(*(REG32(GPIO0_BASE+GPIO_OE))) = ~(PIN5 | PIN4 | PIN3);  
-    (*(REG32(GPIO0_BASE + GPIO_SETDATAOUT))) |= (PIN5 | PIN4 | PIN3);
-    //(*(REG32(GPIO0_BASE + GPIO_SETDATAOUT))) |= PIN2;
-    /* Controlling the output capability */
-    //(*(REG32(GPIO0_BASE+GPIO_OE))) = ~(PIN3|PIN4|PIN5);  
-
-    /* Switch off the leds */ 
-    (*(REG32(GPIO1_BASE+GPIO_CLEARDATAOUT))) = PIN24|PIN23|PIN22|PIN21; 
-} 
+}
 
