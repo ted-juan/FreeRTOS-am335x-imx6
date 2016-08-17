@@ -33,9 +33,9 @@
     FreeRTOS is distributed in the hope that it will be useful, but WITHOUT
     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
     FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-    more details. You should have received a copy of the GNU General Public 
-    License and the FreeRTOS license exception along with FreeRTOS; if not it 
-    can be viewed here: http://www.freertos.org/a00114.html and also obtained 
+    more details. You should have received a copy of the GNU General Public
+    License and the FreeRTOS license exception along with FreeRTOS; if not it
+    can be viewed here: http://www.freertos.org/a00114.html and also obtained
     by writing to Richard Barry, contact details for whom are available on the
     FreeRTOS WEB site.
 
@@ -91,9 +91,9 @@ static void prvSetupTimerInterrupt( void );
 
 
 /*--------------------------------------------------*/
-/* 
- * The scheduler can only be started from ARM mode, so 
- * vPortISRStartFirstSTask() is defined in portISR.c. 
+/*
+ * The scheduler can only be started from ARM mode, so
+ * vPortISRStartFirstSTask() is defined in portISR.c.
  */
 extern void vPortISRStartFirstTask( void );
 
@@ -105,11 +105,11 @@ void D_ABO(void);
 void D_NOT(void);
 
 
-/* 
- * Initialise the stack of a task to look exactly as if a call to 
+/*
+ * Initialise the stack of a task to look exactly as if a call to
  * portSAVE_CONTEXT had been called.
  *
- * See header file for description. 
+ * See header file for description.
  */
 portSTACK_TYPE *pxPortInitialiseStack( portSTACK_TYPE *pxTopOfStack, pdTASK_CODE pxCode, void *pvParameters )
 {
@@ -117,43 +117,43 @@ portSTACK_TYPE *pxOriginalTOS;
 
 	pxOriginalTOS = pxTopOfStack;
 
-	/* Setup the initial stack of the task.  The stack is set exactly as 
+	/* Setup the initial stack of the task.  The stack is set exactly as
 	expected by the portRESTORE_CONTEXT() macro. */
 
 	/* First on the stack is the return address - which in this case is the
 	start of the task.  The offset is added to make the return address appear
 	as it would within an IRQ ISR. */
-	*pxTopOfStack = ( portSTACK_TYPE ) pxCode + portINSTRUCTION_SIZE;		
+	*pxTopOfStack = ( portSTACK_TYPE ) pxCode + portINSTRUCTION_SIZE;
 	pxTopOfStack--;
 
 	*pxTopOfStack = ( portSTACK_TYPE ) 0xaaaaaaaa;	/* R14 */
-	pxTopOfStack--;	
+	pxTopOfStack--;
 	*pxTopOfStack = ( portSTACK_TYPE ) pxOriginalTOS; /* Stack used when task starts goes in R13. */
 	pxTopOfStack--;
 	*pxTopOfStack = ( portSTACK_TYPE ) 0x12121212;	/* R12 */
-	pxTopOfStack--;	
+	pxTopOfStack--;
 	*pxTopOfStack = ( portSTACK_TYPE ) 0x11111111;	/* R11 */
-	pxTopOfStack--;	
+	pxTopOfStack--;
 	*pxTopOfStack = ( portSTACK_TYPE ) 0x10101010;	/* R10 */
-	pxTopOfStack--;	
+	pxTopOfStack--;
 	*pxTopOfStack = ( portSTACK_TYPE ) 0x09090909;	/* R9 */
-	pxTopOfStack--;	
+	pxTopOfStack--;
 	*pxTopOfStack = ( portSTACK_TYPE ) 0x08080808;	/* R8 */
-	pxTopOfStack--;	
+	pxTopOfStack--;
 	*pxTopOfStack = ( portSTACK_TYPE ) 0x07070707;	/* R7 */
-	pxTopOfStack--;	
+	pxTopOfStack--;
 	*pxTopOfStack = ( portSTACK_TYPE ) 0x06060606;	/* R6 */
-	pxTopOfStack--;	
+	pxTopOfStack--;
 	*pxTopOfStack = ( portSTACK_TYPE ) 0x05050505;	/* R5 */
-	pxTopOfStack--;	
+	pxTopOfStack--;
 	*pxTopOfStack = ( portSTACK_TYPE ) 0x04040404;	/* R4 */
-	pxTopOfStack--;	
+	pxTopOfStack--;
 	*pxTopOfStack = ( portSTACK_TYPE ) 0x03030303;	/* R3 */
-	pxTopOfStack--;	
+	pxTopOfStack--;
 	*pxTopOfStack = ( portSTACK_TYPE ) 0x02020202;	/* R2 */
-	pxTopOfStack--;	
+	pxTopOfStack--;
 	*pxTopOfStack = ( portSTACK_TYPE ) 0x01010101;	/* R1 */
-	pxTopOfStack--;	
+	pxTopOfStack--;
 
 	/* When the task starts is will expect to find the function parameter in
 	R0. */
@@ -172,7 +172,7 @@ portSTACK_TYPE *pxOriginalTOS;
 
 	pxTopOfStack--;
 
-	/* Some optimisation levels use the stack differently to others.  This 
+	/* Some optimisation levels use the stack differently to others.  This
 	means the interrupt flags cannot always be stored on the stack and will
 	instead be stored in a variable, which is then saved as part of the
 	tasks context. */
@@ -188,7 +188,7 @@ portBASE_TYPE xPortStartScheduler( void )
 	here already. */
 	prvSetupTimerInterrupt();
 	/* Start the first task. */
-	vPortISRStartFirstTask();	
+	vPortISRStartFirstTask();
 
 	/* Should not get here! */
 	return 0;
@@ -224,16 +224,15 @@ void D_NOT(void)
 static void prvSetupTimerInterrupt( void )
 {
 	volatile int i;
-    	volatile unsigned long ul; 
 	unsigned long ulCompareMatch;
 	extern void ( vIRQHandler )( void );
 	extern void ( vPortYieldProcessor ) ( void );
-	
+
 
 	//portDISABLE_INTERRUPTS();
 
 	/* Reset Interrupt Controller */
-    /* Performing a software reset to trigger a Memory Protection Unit 
+    /* Performing a software reset to trigger a Memory Protection Unit
      * Interrupt Controller module reset */
 	(*(REG32(MPU_INTC + INTCPS_SYSCONFIG))) = 0x00000002;
 	while(((*(REG32(MPU_INTC + 0x14)))&1)!=1)	{} //wait for module to be OK
@@ -255,7 +254,7 @@ static void prvSetupTimerInterrupt( void )
 	E_UNDEFINED = (long)U_DEF;
 	E_PREFETCH = (long)P_FET;
 	E_DATA_ABRT = (long)D_ABO;
-	
+
 
 	/* Enable Interrupt 68 and 96 and 97 which is used for DMTIMER 2 and GPIO0INTS*/
 	(*(REG32(MPU_INTC + INTCPS_MIR_CLEAR2))) = ~(*(REG32(MPU_INTC + INTCPS_MIR2)))|0x10;
@@ -273,7 +272,7 @@ static void prvSetupTimerInterrupt( void )
 	 (*(REG32(CM_PER + CM_PER_TIMER2))) =0x2;
 	for ( i=0; i<2000; i++){i++;}
 
-	
+
 	//(*(REG32(GPTI1 + GPTI_TIOCP_CFG))) = 0x2; // reset interface
 	(*(REG32(DMTIMER2 + 0x10))) = 0x1; // reset interface
 
@@ -307,7 +306,7 @@ static void prvSetupTimerInterrupt( void )
 	(*(REG32(DMTIMER2 + 0x44))) = 0xFF;
 	for ( i=0; i<100; i++){}
 
-	
+
 }
 
 

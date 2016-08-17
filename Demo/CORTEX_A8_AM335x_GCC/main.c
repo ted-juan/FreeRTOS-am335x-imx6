@@ -134,9 +134,9 @@ int main( void )
 	init_serial(SERIAL_BASE);
 	serial_puts(SERIAL_BASE,"Starting FreeRTOS\n");
 
-	xTaskCreate(vRespTask1,  ( signed char * ) "resp1", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 3, ( xTaskHandle * ) NULL);
+	xTaskCreate(vRespTask1, "resp1", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 3, ( xTaskHandle * ) NULL);
 
-	xTaskCreate(vRespTask2,  ( signed char * ) "resp2", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1, ( xTaskHandle * ) NULL);
+	xTaskCreate(vRespTask2, "resp2", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1, ( xTaskHandle * ) NULL);
 
 	vTaskStartScheduler();
 
