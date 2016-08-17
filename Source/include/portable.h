@@ -86,7 +86,7 @@ specific constants has been moved into the deprecated_definitions.h header
 file. */
 #include "deprecated_definitions.h"
 
-#ifdef CORTEXT_A8_AM335X_GCC
+#ifdef CORTEX_A8_AM335X_GCC
     #include "../../Source/portable/GCC/ARM_CA8/portmacro.h"
 #endif
 

@@ -67,12 +67,12 @@ OBJCOPY=arm-none-eabi-objcopy
 ARCH=arm-none-eabi-ar
 CRT0=boot.s
 WARNINGS=-Wall -Wextra -Wshadow -Wpointer-arith -Wbad-function-cast -Wcast-align -Wsign-compare -Wno-pointer-sign \
-		-Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wunused
+		-Waggregate-return -Wstrict-prototypes -Wmissing-declarations -Wunused
 
 #
 # CFLAGS common to both the THUMB and ARM mode builds
 
-CFLAGS=$(WARNINGS) -D DEBUG -D $(RUN_MODE) -D CORTEXT_A8_AM335X_GCC -I. -I../../Source/include \
+CFLAGS=$(WARNINGS) -D DEBUG -D $(RUN_MODE) -D CORTEX_A8_AM335X_GCC -I. -I../../Source/include \
 		-I../Common/include $(DEBUG) -mcpu=cortex-a8 -T$(LDSCRIPT) -Ttext $(TEXT_BASE) \
 	 $(OPTIM) -fomit-frame-pointer -fno-strict-aliasing -mno-unaligned-access
 
@@ -92,6 +92,7 @@ THUMB_SRC = \
 main.c \
 serial.c \
 syscalls.c \
+printf-stdarg.c \
 $(DEMO_SOURCE_DIR)/integer.c \
 $(DEMO_SOURCE_DIR)/PollQ.c \
 $(DEMO_SOURCE_DIR)/flop.c \
