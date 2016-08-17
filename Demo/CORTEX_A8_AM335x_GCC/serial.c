@@ -15,12 +15,12 @@ void init_serial(unsigned int base)	{
 	int clock_divisor;
 	if (base == UART4_BASE)	{
 		clock_divisor = calc_divisor(UART4_BAUDRATE);
-		(*(REG32(base+0x4))) = 0x0;	
+		(*(REG32(base+0x4))) = 0x0;
 		serial_puts(UART0_BASE,"Init4\n");}
 	else	{
 		clock_divisor = calc_divisor(UART0_BAUDRATE);
 		(*(REG32(base+0x4))) = 0x0;	}
-	(*(REG32(base+0xC))) = 0x83; 
+	(*(REG32(base+0xC))) = 0x83;
 	(*(REG32(base+0x0))) = clock_divisor & 0xff;
 	(*(REG32(base+0x4))) = (clock_divisor >> 8) & 0xff;
 	(*(REG32(base+0xC))) = (MCR_DTR | MCR_RTS);
@@ -46,4 +46,11 @@ void serial_putsn (unsigned int base, const char *s, int n)
 	for (i=0; i<n; i++)	{
 		serial_putc (base,s[i]);
 	}
+}
+
+
+void serial_putchar(const char c)
+{
+	while (((*(REG32(SERIAL_BASE+0x14))) & LSR_THRE) == 0);
+	(*(REG32(SERIAL_BASE+0x00))) = c;
 }

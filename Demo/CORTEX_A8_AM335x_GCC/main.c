@@ -77,6 +77,7 @@ short channel2_flag = FALSE;
 short channel3_flag = FALSE;
 
 static void prvSetupHardware( void );
+extern int test_printf(void);
 
 void DATA_ABORT ( void ) __attribute__((naked));
 
@@ -133,6 +134,8 @@ int main( void )
 	//INIT SERIAL
 	init_serial(SERIAL_BASE);
 	serial_puts(SERIAL_BASE,"Starting FreeRTOS\n");
+
+	test_printf();
 
 	xTaskCreate(vRespTask1, "resp1", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 3, ( xTaskHandle * ) NULL);
 
