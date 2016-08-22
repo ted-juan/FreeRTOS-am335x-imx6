@@ -29,6 +29,7 @@ extern void serial_putchar(const char c);
 #define putchar serial_putchar
 
 #include <stdarg.h>
+#include "sys.h"
 
 #define TEST_PRINTF
 
@@ -177,10 +178,20 @@ static int print( char **out, const char *format, va_list args )
 				pc += prints (out, scr, width, pad);
 				continue;
 			}
+			if( *format == '\n' ) {
+				printchar (out, *format);
+				printchar (out, '\r');
+				continue;
+			}
 		}
 		else {
 		out:
 			printchar (out, *format);
+
+			if (*format == '\n') {
+				printchar (out, '\r');
+				++pc;
+			}
 			++pc;
 		}
 	}
@@ -189,7 +200,7 @@ static int print( char **out, const char *format, va_list args )
 	return pc;
 }
 
-int printf(const char *format, ...)
+int sys_printf(const char *format, ...)
 {
         va_list args;
 

@@ -60,16 +60,17 @@
 */
 
 /* Standard includes. */
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
+//#include <stdint.h>
+//#include <stdlib.h>
+//#include <string.h>
 
-#include "serial.h"
 
 /* Scheduler includes. */
 #include "FreeRTOS.h"
 #include "task.h"
 #include "am335.h"
+#include "serial.h"
+#include "sys.h"
 
 int checkInt = 0;
 short channel1_flag = FALSE;
@@ -77,8 +78,6 @@ short channel2_flag = FALSE;
 short channel3_flag = FALSE;
 
 static void prvSetupHardware( void );
-extern int test_printf(void);
-
 void DATA_ABORT ( void ) __attribute__((naked));
 
 /*-----------------------------------------------------------*/
@@ -93,11 +92,11 @@ static void vRespTask1(void *pvParameters)
 
 	// Initialise the xLastWakeTime variable with the current time.
 	xLastWakeTime = xTaskGetTickCount();
-	serial_puts(SERIAL_BASE, "task1\n");
+	printf("task1\n");
 
 	while(1)
 	{
-		serial_puts(SERIAL_BASE,"TASK1\n");
+		printf("TASK1\n");
 		vTaskDelayUntil(&xLastWakeTime, xFrequency);
 		//vTaskDelay(1);
 	}
@@ -108,17 +107,17 @@ static void vRespTask1(void *pvParameters)
 static void vRespTask2(void *pvParameters)
 {
 	pvParameters= pvParameters; /* avoid compile warning */
-	serial_puts(SERIAL_BASE,"task2\n");
+	printf("task2\n");
 
 	while(1)
 	{
-		serial_puts(SERIAL_BASE,"TASK2\n");
+		printf("TASK2\n");
 	}
 }
 
 
 void DATA_ABORT()	{
-	serial_puts(SERIAL_BASE,"omg dataabort...\n");
+	printf("omg dataabort...\n");
 	while(1){}
 }
 
@@ -133,9 +132,9 @@ int main( void )
 
 	//INIT SERIAL
 	init_serial(SERIAL_BASE);
-	serial_puts(SERIAL_BASE,"Starting FreeRTOS\n");
+	printf("Starting FreeRTOS\n");
 
-	test_printf();
+	//test_printf();
 
 	xTaskCreate(vRespTask1, "resp1", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 3, ( xTaskHandle * ) NULL);
 

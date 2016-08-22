@@ -67,7 +67,7 @@ OBJCOPY=arm-none-eabi-objcopy
 ARCH=arm-none-eabi-ar
 CRT0=boot.s
 WARNINGS=-Wall -Wextra -Wshadow -Wpointer-arith -Wbad-function-cast -Wcast-align -Wsign-compare -Wno-pointer-sign \
-		-Waggregate-return -Wstrict-prototypes -Wmissing-declarations -Wunused
+		-Waggregate-return -Wstrict-prototypes -Wunused
 
 #
 # CFLAGS common to both the THUMB and ARM mode builds
