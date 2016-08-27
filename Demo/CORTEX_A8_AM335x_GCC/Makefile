@@ -65,15 +65,19 @@ DBGMSG=NO
 CC=arm-none-eabi-gcc
 OBJCOPY=arm-none-eabi-objcopy
 ARCH=arm-none-eabi-ar
-CRT0=boot.s
+CRT0=src/sys/boot.s
 WARNINGS=-Wall -Wextra -Wshadow -Wpointer-arith -Wbad-function-cast -Wcast-align -Wsign-compare -Wno-pointer-sign \
 		-Waggregate-return -Wstrict-prototypes -Wunused
 
 #
 # CFLAGS common to both the THUMB and ARM mode builds
 
-CFLAGS=$(WARNINGS) -D DEBUG -D $(RUN_MODE) -D CORTEX_A8_AM335X_GCC -I. -I../../Source/include \
-		-I../Common/include $(DEBUG) -mcpu=cortex-a8 -T$(LDSCRIPT) -Ttext $(TEXT_BASE) \
+CFLAGS=$(WARNINGS) -D DEBUG -D $(RUN_MODE) -D CORTEX_A8_AM335X_GCC \
+	    -I./src/include \
+	    -I./src/driver/am335x \
+        -I../../Source/include \
+		-I../Common/include $(DEBUG) \
+		-mcpu=cortex-a8 -T$(LDSCRIPT) -Ttext $(TEXT_BASE) \
 	 $(OPTIM) -fomit-frame-pointer -fno-strict-aliasing -mno-unaligned-access
 
 ifeq ($(USE_THUMB_MODE),YES)
@@ -89,10 +93,10 @@ DEMO_SOURCE_DIR=../Common/Minimal
 # Source files that can be built to THUMB mode.
 #
 THUMB_SRC = \
-main.c \
-serial.c \
-syscalls.c \
-printf-stdarg.c \
+src/sys/main.c \
+src/driver/am335x/serial.c \
+src/sys/syscalls.c \
+src/sys/printf-stdarg.c \
 $(DEMO_SOURCE_DIR)/integer.c \
 $(DEMO_SOURCE_DIR)/PollQ.c \
 $(DEMO_SOURCE_DIR)/flop.c \
@@ -121,7 +125,7 @@ else
 	TARGET=rtosdemo-a
 endif
 
-$(TARGET).bin : $(TARGET).elf
+all : $(TARGET).elf
 	$(OBJCOPY) $(TARGET).elf -O binary $(TARGET).bin
 
 $(TARGET).hex : $(TARGET).elf

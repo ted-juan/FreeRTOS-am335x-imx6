@@ -13,13 +13,10 @@ static int calc_divisor (unsigned int baud)
 
 void init_serial(unsigned int base)	{
 	int clock_divisor;
-	if (base == UART4_BASE)	{
-		clock_divisor = calc_divisor(UART4_BAUDRATE);
-		(*(REG32(base+0x4))) = 0x0;
-		serial_puts(UART0_BASE,"Init4\n");}
-	else	{
-		clock_divisor = calc_divisor(UART0_BAUDRATE);
-		(*(REG32(base+0x4))) = 0x0;	}
+
+	clock_divisor = calc_divisor(SERIAL_BAUDRATE);
+
+	(*(REG32(base+0x4))) = 0x0;
 	(*(REG32(base+0xC))) = 0x83;
 	(*(REG32(base+0x0))) = clock_divisor & 0xff;
 	(*(REG32(base+0x4))) = (clock_divisor >> 8) & 0xff;
