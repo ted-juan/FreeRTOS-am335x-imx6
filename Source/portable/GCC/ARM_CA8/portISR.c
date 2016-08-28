@@ -107,16 +107,6 @@ void vIRQHandler ( void ){
 	/* If this is IRQ_38 then jump to vTickISR */
 	else //if((*(REG32(MPU_INTC + INTCPS_SIR_IRQ))) == 45)
 	{
-		if ((*(REG32(GPIO0_BASE + 0x2C)))&PIN2)	{
-			channel1_flag = TRUE;
-		}	
-		if ((*(REG32(GPIO0_BASE + 0x2C)))&PIN14)	{
-			channel2_flag = TRUE;
-		}	
-		if ((*(REG32(GPIO0_BASE + 0x2C)))&PIN15)	{
-			channel3_flag = TRUE;
-		}	
-		
 		(*(REG32(GPIO0_BASE+0x2C))) |= (PIN2 | PIN14 | PIN15);  //IRQ Status  Clear interrupts
 		(*(REG32(MPU_INTC + 0x48))) = 0x01; //NEWIRQ
 	}

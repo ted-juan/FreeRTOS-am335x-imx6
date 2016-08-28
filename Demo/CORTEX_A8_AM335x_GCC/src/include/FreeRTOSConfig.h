@@ -54,8 +54,29 @@
 #ifndef FREERTOS_CONFIG_H
 #define FREERTOS_CONFIG_H
 
-#include <am335.h>
+#include "type.h"
+#include "am335.h"
+#include <string.h>
+#include "error.h"
+#include "sysdbg.h"
+#include "sys.h"
 
+#define ___swab16(x) \
+                    ((unsigned int)( \
+                                (((unsigned int)(x) & (unsigned int)0x00ffU) << 8) | \
+                                (((unsigned int)(x) & (unsigned int)0xff00U) >> 8) ))
+#define ___swab32(x) \
+                    ((unsigned long)( \
+                                (((unsigned long)(x) & (unsigned long)0x000000ffUL) << 24) | \
+                                (((unsigned long)(x) & (unsigned long)0x0000ff00UL) <<  8) | \
+                                (((unsigned long)(x) & (unsigned long)0x00ff0000UL) >>  8) | \
+                                (((unsigned long)(x) & (unsigned long)0xff000000UL) >> 24) ))
+
+#define htonl(x) ___swab32(x)
+#define ntohl(x) ___swab32(x)
+#define htons(x) ___swab16(x)
+#define ntohs(x) ___swab16(x)
+            
 
 /*-----------------------------------------------------------
  * Application specific definitions.
@@ -79,10 +100,29 @@
 #define configDMTIMER2_CLOCK_HZ		( ( unsigned long ) 24000000 )
 
 
+/*
+ * Task stack size, priority and related configuration
+ */
+
+#define SYS_ISR_STK_SIZE 	    512
+
+/*System timer task */
+#define TIMER_TASK_PRIO     	4
+#define TIMER_TASK_STK_SIZE 	4096
+
+/*System Event task, handle device's event from ISR */
+#define EVENT_TASK_PRIO      	6
+#define EVENT_TASK_STK_SIZE  	512
+#define EVENT_Q_MSG          	5
+
+/*System task */
+#define SYS_TASK_PRIO      	    7
+#define SYS_TASK_STK_SIZE  	    2048
+
 
 #define configTICK_RATE_HZ		( ( portTickType ) 1000 ) 
 #define configMAX_PRIORITIES		( ( unsigned portBASE_TYPE ) 5 )
-#define configMINIMAL_STACK_SIZE	( ( unsigned short ) 128 )
+#define configMINIMAL_STACK_SIZE       ( ( unsigned short ) 128 )
 #define configTOTAL_HEAP_SIZE		( ( size_t ) ( 24 * 1024 ) )
 #define configMAX_TASK_NAME_LEN		( 16 )
 #define configUSE_TRACE_FACILITY	0

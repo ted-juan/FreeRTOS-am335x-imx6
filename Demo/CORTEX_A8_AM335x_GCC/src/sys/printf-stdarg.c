@@ -28,8 +28,8 @@
 extern void serial_putchar(const char c);
 #define putchar serial_putchar
 
+#include "FreeRTOS.h"
 #include <stdarg.h>
-#include "sys.h"
 
 #define TEST_PRINTF
 
