@@ -113,24 +113,21 @@ _mainCRTStartup:
 	mov		r0, #0          /* no arguments  */
 	mov		r1, #0          /* no argv either */
 
-	    /* Set V=0 in CP15 SCTRL register - for VBAR to point to vector */
-	   mrc    p15, 0, r0, c1, c0, 0    @ Read CP15 SCTRL Register
-	    bic    r0, #(1 << 13)       @ V = 0
-	    mcr    p15, 0, r0, c1, c0, 0    @ Write CP15 SCTRL Register
+	/* Set V=0 in CP15 SCTRL register - for VBAR to point to vector */
+	mrc    p15, 0, r0, c1, c0, 0    @ Read CP15 SCTRL Register
+	bic    r0, #(1 << 13)       @ V = 0
+	mcr    p15, 0, r0, c1, c0, 0    @ Write CP15 SCTRL Register
 
-	    /* Set vector address in CP15 VBAR register */
-	    ldr     r0, =_vector_table
-	    mcr     p15, 0, r0, c12, c0, 0  @Set VBAR
+	/* Set vector address in CP15 VBAR register */
+	ldr     r0, =_vector_table
+	mcr     p15, 0, r0, c12, c0, 0  @Set VBAR
 
 	bl		main
 
 endless_loop:
 	b               endless_loop
 
-
 	.align 0
-
-
 
 	.LC1:
 	.word   __bss_beg__
@@ -152,28 +149,29 @@ endless_loop:
 .section .startup,"ax"
          .code 32
          .align 0
-_vector_table:	b     _start			/* reset - _start		*/
-		ldr   pc, _undf	/* undefined - _undf		*/
-		ldr   pc, _swi	/* SWI - _swi				*/
-		ldr   pc, _pabt			/* program abort - _pabt	*/
+_vector_table:	
+        b      _start       /* reset - _start		    */
+		ldr   pc, _undf	    /* undefined - _undf		*/
+		ldr   pc, _swi	    /* SWI - _swi				*/
+		ldr   pc, _pabt		/* program abort - _pabt	*/
 		ldr   pc, _dabt		/* data abort - _dabt		*/
-		nop			/* reserved				*/
+		nop			        /* reserved				    */
 		ldr   pc, _irq		/* IRQ - read the VIC		*/
 		ldr   pc, _fiq		/* FIQ - _fiq				*/
 
 
 
-_undf:  .word __undf /* undefined				*/
-_swi:   .word vPortYieldProcessor /* SWI						*/
-_pabt:  .word __pabt /* program abort			*/
-_dabt:  .word DATA_ABORT  /* data abort				*/
+_undf:  .word __undf                  /* undefined				*/
+_swi:   .word vPortYieldProcessor     /* SWI					*/
+_pabt:  .word __pabt                  /* program abort			*/
+_dabt:  .word DATA_ABORT              /* data abort				*/
 _irq:   .word vIRQHandler
-_fiq:   .word __swi /* FIQ						*/
+_fiq:   .word __swi                   /* FIQ					*/
 
 __undf: b     .                         /* undefined				*/
 __pabt: b     .                         /* program abort			*/
 __dabt: b     .                         /* data abort				*/
 __fiq:  b     .                         /* FIQ						*/
-__irq: b     .                         /* data abort				*/
+__irq:  b     .                         /* data abort				*/
 __swi:  b     .                         /* FIQ						*/
 	

@@ -1,7 +1,3 @@
-/****
-Hfo @ 2014
-****/
-
 
 #include "am335.h"
 #include "serial.h"
