@@ -17,10 +17,8 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "serial.h"
-#include "sys.h"
 
-void DATA_ABORT ( void ) __attribute__((naked));
-
+INT8U   DBG_SysInfo = DBG_LEVEL1;
 struct SYS_IO_BUF	SYS_OutBuf;
 /*-----------------------------------------------------------*/
 
@@ -45,10 +43,6 @@ static void SYS_Task(void *pvParameters)
 }
 
 
-void DATA_ABORT()	{
-	printf("omg dataabort...\n");
-	while(1){}
-}
 
 static void  SYS_HwInit(void)
 {
@@ -84,7 +78,7 @@ INT16S SYS_Init(void)
     /*this function should be done before driver using the none cache region*/
 //    SYS_NoneCacheRegionInit();
 //    SYS_MEM_Init();
-//	SYS_IRQ_Init();
+	SYS_IRQ_Init();
 
     /*Create the system task*/
 	err = xTaskCreate(SYS_Task, "sys_task", SYS_TASK_STK_SIZE, NULL, SYS_TASK_PRIO, ( xTaskHandle * ) NULL);

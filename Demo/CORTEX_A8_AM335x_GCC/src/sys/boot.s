@@ -18,7 +18,7 @@
 
 	.extern vIRQHandler
 	.extern vPortYieldProcessor
-	.extern DATA_ABORT
+	.extern SYS_Data_Abort
 
 	.global start
 	.global endless_loop
@@ -164,7 +164,7 @@ _vector_table:
 _undf:  .word __undf                  /* undefined				*/
 _swi:   .word vPortYieldProcessor     /* SWI					*/
 _pabt:  .word __pabt                  /* program abort			*/
-_dabt:  .word DATA_ABORT              /* data abort				*/
+_dabt:  .word SYS_Data_Abort		  /* data abort				*/
 _irq:   .word vIRQHandler
 _fiq:   .word __swi                   /* FIQ					*/
 

@@ -33,9 +33,9 @@
     FreeRTOS is distributed in the hope that it will be useful, but WITHOUT
     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
     FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-    more details. You should have received a copy of the GNU General Public 
-    License and the FreeRTOS license exception along with FreeRTOS; if not it 
-    can be viewed here: http://www.freertos.org/a00114.html and also obtained 
+    more details. You should have received a copy of the GNU General Public
+    License and the FreeRTOS license exception along with FreeRTOS; if not it
+    can be viewed here: http://www.freertos.org/a00114.html and also obtained
     by writing to Richard Barry, contact details for whom are available on the
     FreeRTOS WEB site.
 
@@ -54,12 +54,13 @@
 #ifndef FREERTOS_CONFIG_H
 #define FREERTOS_CONFIG_H
 
+#include <string.h>
 #include "type.h"
 #include "am335.h"
-#include <string.h>
 #include "error.h"
 #include "sysdbg.h"
 #include "sys.h"
+#include "dev.h"
 
 #define ___swab16(x) \
                     ((unsigned int)( \
@@ -76,7 +77,7 @@
 #define ntohl(x) ___swab32(x)
 #define htons(x) ___swab16(x)
 #define ntohs(x) ___swab16(x)
-            
+
 
 /*-----------------------------------------------------------
  * Application specific definitions.
@@ -85,12 +86,12 @@
  * application requirements.
  *
  * THESE PARAMETERS ARE DESCRIBED WITHIN THE 'CONFIGURATION' SECTION OF THE
- * FreeRTOS API DOCUMENTATION AVAILABLE ON THE FreeRTOS.org WEB SITE. 
+ * FreeRTOS API DOCUMENTATION AVAILABLE ON THE FreeRTOS.org WEB SITE.
  *
  * See http://www.freertos.org/a00110.html.
  *----------------------------------------------------------*/
 
-#define configUSE_PREEMPTION	1		
+#define configUSE_PREEMPTION	1
 #define configUSE_IDLE_HOOK	0
 #define configUSE_TICK_HOOK	0
 #define configUSE_TIME_SLICING	1
@@ -120,7 +121,7 @@
 #define SYS_TASK_STK_SIZE  	    2048
 
 
-#define configTICK_RATE_HZ		( ( portTickType ) 1000 ) 
+#define configTICK_RATE_HZ		( ( portTickType ) 1000 )
 #define configMAX_PRIORITIES		( ( unsigned portBASE_TYPE ) 5 )
 #define configMINIMAL_STACK_SIZE       ( ( unsigned short ) 128 )
 #define configTOTAL_HEAP_SIZE		( ( size_t ) ( 24 * 1024 ) )

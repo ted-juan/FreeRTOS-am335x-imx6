@@ -165,12 +165,12 @@ typedef struct {                       /* MEMORY CONTROL BLOCK                  
     INT32U  OSMemBlkSize;              /* Size (in bytes) of each block of memory                      */
     INT32U  OSMemNBlks;                /* Total number of blocks in this partition                     */
     INT32U  OSMemNFree;                /* Number of memory blocks remaining in this partition          */
-#ifdef OS_TEST    
+#ifdef OS_TEST
     void    *OSMemStartAddr;    /* Pointer to start of memory partition     */
     void    *OSMemEndAddr;      /* Pointer to end of memory partition     */
     INT32U  OSMemUtilize;       /* to measure the maximun utilization of memory block*/
     INT32U  OSMemError;         /* to record the times of fail of memory allocation*/
-#endif    
+#endif
 } OS_MEM;
 
 /*
@@ -269,5 +269,9 @@ int memicmp(const void *memptr1, const void *memptr2, int count); /* string.h */
 extern int test_printf(void);
 extern int sys_printf(const char *format, ...);
 
-#endif /* #ifndef _SYS_H */
+#define udelay(time)        { INT32U z; for(z=0; z<time; z++) __asm volatile ("nop"); }
 
+#define OS_ENTER_CRITICAL()		vPortEnterCritical();
+#define OS_EXIT_CRITICAL()		vPortExitCritical();
+
+#endif /* #ifndef _SYS_H */

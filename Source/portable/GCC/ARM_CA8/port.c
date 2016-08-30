@@ -231,30 +231,22 @@ static void prvSetupTimerInterrupt( void )
 
 	//portDISABLE_INTERRUPTS();
 
-	/* Reset Interrupt Controller */
-    /* Performing a software reset to trigger a Memory Protection Unit
-     * Interrupt Controller module reset */
+    /* Interrupt Controller module reset */
 	(*(REG32(MPU_INTC + INTCPS_SYSCONFIG))) = 0x00000002;
 	while(((*(REG32(MPU_INTC + 0x14)))&1)!=1)	{} //wait for module to be OK
-	for ( i=0; i<2000; i++){}
+
+	udelay(2000);
     /* Functional clock auto-idle mode : FuncFree */
 	(*(REG32(MPU_INTC + INTCPS_IDLE))) = 0x00000001;
-	for ( i=0; i<100; i++){}
-	(*(REG32(MPU_INTC + 0x68))) = 0xFF;
-	for ( i=0; i<100; i++){}
-	(*(REG32(MPU_INTC + INTCPS_ILSR68))) = 0x0C;
-	(*(REG32(MPU_INTC + INTCPS_ILSR96))) = 0x0C;
-	(*(REG32(MPU_INTC + INTCPS_ILSR97))) = 0x0C;
-	for ( i=0; i<100; i++){}
 
+	udelay(100);
 
-
+	(*(REG32(MPU_INTC + INTCPS_THRESHOLD))) = 0xFF;
 
 	/* Setup Interrupts */
 	E_UNDEFINED = (long)U_DEF;
 	E_PREFETCH = (long)P_FET;
 	E_DATA_ABRT = (long)D_ABO;
-
 
 	/* Enable Interrupt 68 and 96 and 97 which is used for DMTIMER 2 and GPIO0INTS*/
 	(*(REG32(MPU_INTC + INTCPS_MIR_CLEAR2))) = ~(*(REG32(MPU_INTC + INTCPS_MIR2)))|0x10;

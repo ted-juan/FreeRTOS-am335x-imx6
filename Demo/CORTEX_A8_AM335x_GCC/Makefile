@@ -95,7 +95,7 @@ DEMO_SOURCE_DIR=../Common/Minimal
 THUMB_SRC = \
 src/sys/main.c \
 src/driver/am335x/serial.c \
-src/driver/am335x/irq.c \
+src/driver/am335x/am335x_intc.c \
 src/sys/syscalls.c \
 src/sys/printf-stdarg.c \
 $(DEMO_SOURCE_DIR)/integer.c \
