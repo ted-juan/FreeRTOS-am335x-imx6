@@ -54,9 +54,16 @@ void SYS_Data_Abort(void)	{
 */
 INT32S SYS_Install_Handler(SYS_DEVICE *dev, INT32U location, void (*handler)(SYS_DEVICE *dev))
 {
+	INT32U irq_set, irq_index;
+
+	printf("location=%d\n", location);
 	OS_ENTER_CRITICAL();
 	if (location<MAX_IRQ_NUM && SYS_Irq[location] == SYS_Unhandle_Irq)
 	{
+		irq_set = location >> 5;
+		irq_index = location & 0x1f;
+        (*(REG32(MPU_INTC + INTCPS_ILSR0 + (location<<2)))) = 0x0C;
+        (*(REG32(MPU_INTC + INTCPS_MIR_CLEAR0 + irq_set*0x20))) = ~(*(REG32(MPU_INTC + INTCPS_MIR0 + irq_set*0x20)))| (1<< irq_index);
 		SYS_Irq[location] = handler;
 		SYS_IrqDev[location] = dev;		/*device pointer, NULL for timer*/
 		OS_EXIT_CRITICAL();
@@ -90,13 +97,13 @@ void vSYS_IRQ_Handler(void)
 {
 	INT32U irq_num, irq_set, irq_index, mask;
 
-	while ((irq_num = (*(REG32(MPU_INTC + INTCPS_SIR_IRQ))))!=0)
+	while ((irq_num = (*(REG32(MPU_INTC + INTCPS_SIR_IRQ))) & 0x7f ) !=0 )
 	{
 		irq_set = irq_num >> 5;
 		irq_index = irq_num & 0x1f;
 		mask = *(REG32(MPU_INTC + INTCPS_MIR0 + irq_set*0x20));
 
-		if ((irq_index & (~mask))==0)
+		if (( (1<<irq_index) & (~mask))==0)
 			break;
 
         (*(REG32(MPU_INTC + INTCPS_CONTROL))) = 0x01; //NEWIRQ

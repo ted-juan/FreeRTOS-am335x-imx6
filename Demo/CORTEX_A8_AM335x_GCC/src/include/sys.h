@@ -207,7 +207,7 @@ extern INT16S SYS_GetTime(SYS_TIME *t);
 extern char *SYS_GetPass( const char * prompt );
 extern INT32S SYS_Install_Handler(SYS_DEVICE *dev, INT32U location, void (*handler)(SYS_DEVICE *dev));
 extern VOID SYS_Register_IRQ(INT32U type, INT32U index, INT32U priority, INT32U level, INT32U trigger, INT32U handler);
-
+extern INT16S OS_TimerInit(void);
 /*
 *===========================================================================
 * Macro    : LINEAR_TO_REAL  and REAL_TO_LINEAR

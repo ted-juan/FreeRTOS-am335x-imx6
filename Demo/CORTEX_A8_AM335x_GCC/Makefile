@@ -72,7 +72,7 @@ WARNINGS=-Wall -Wextra -Wshadow -Wpointer-arith -Wbad-function-cast -Wcast-align
 #
 # CFLAGS common to both the THUMB and ARM mode builds
 
-CFLAGS=$(WARNINGS) -D DEBUG -D $(RUN_MODE) -D CORTEX_A8_AM335X_GCC \
+CFLAGS=$(WARNINGS) -g -D DEBUG -D $(RUN_MODE) -D CORTEX_A8_AM335X_GCC \
 	    -I./src/include \
 	    -I./src/driver/am335x \
         -I../../Source/include \
@@ -96,6 +96,7 @@ THUMB_SRC = \
 src/sys/main.c \
 src/driver/am335x/serial.c \
 src/driver/am335x/am335x_intc.c \
+src/driver/am335x/am335x_timer.c \
 src/sys/syscalls.c \
 src/sys/printf-stdarg.c \
 $(DEMO_SOURCE_DIR)/integer.c \
@@ -107,13 +108,14 @@ $(DEMO_SOURCE_DIR)/BlockQ.c \
 $(RTOS_SOURCE_DIR)/tasks.c \
 $(RTOS_SOURCE_DIR)/queue.c \
 $(RTOS_SOURCE_DIR)/list.c \
+$(RTOS_SOURCE_DIR)/timers.c \
 $(RTOS_SOURCE_DIR)/portable/MemMang/heap_2.c \
 $(RTOS_SOURCE_DIR)/portable/GCC/ARM_CA8/port.c
 
 #
 # Source files that must be built to ARM mode.
 #
-ARM_SRC = $(RTOS_SOURCE_DIR)/portable/GCC/ARM_CA8/portISR.c
+ARM_SRC = $(RTOS_SOURCE_DIR)/portable/GCC/ARM_CA8/portISR.c \
 #
 # Define all object files.
 #

@@ -184,9 +184,6 @@ portSTACK_TYPE *pxOriginalTOS;
 
 portBASE_TYPE xPortStartScheduler( void )
 {
-	/* Start the timer that generates the tick ISR.  Interrupts are disabled
-	here already. */
-	prvSetupTimerInterrupt();
 	/* Start the first task. */
 	vPortISRStartFirstTask();
 

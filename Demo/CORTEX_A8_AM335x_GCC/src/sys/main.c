@@ -24,12 +24,18 @@ struct SYS_IO_BUF	SYS_OutBuf;
 
 static void SYS_Task(void *pvParameters)
 {
+	INT16S ret;
 
 	uint32_t xLastWakeTime;
 	const uint32_t xFrequency = 1;
 
 	pvParameters= pvParameters; /* avoid compile warning */
 
+    if ((ret = OS_TimerInit())!=SYSOK)
+    {
+        SYS_DEBUGP(DBG_SysInfo, DBG_MASK1,
+            ("Cannot create timer! %d",ret));
+    }
 	// Initialise the xLastWakeTime variable with the current time.
 	xLastWakeTime = xTaskGetTickCount();
 	printf("task1\n");

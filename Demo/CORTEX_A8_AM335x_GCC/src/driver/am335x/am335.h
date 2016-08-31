@@ -255,6 +255,13 @@ extern short channel3_flag;
 #define INTCPS_ILSR95			0x27C
 #define INTCPS_ILSR96			0x280
 #define INTCPS_ILSR97			0x284
+
+
+/* Interrupt Index */
+#define INTC_DMTIMER1           67
+#define INTC_DMTIMER2           68
+#define INTC_DMTIMER3           69
+
 /* GPIO */
 /* modified */
 //#define GPIO5_BASE				0x48032000
