@@ -1,11 +1,13 @@
 FreeRTOS-am335x
 ===========
 
-FreeRTOS for AM335X BBB-like board
+FreeRTOS v9.0.0
 
-clone from https://github.com/henfos/BBBFreeRTOS
+FreeRTOS for AM335X board
+FreeRTOS for imx6 board
+
+The init is clone from https://github.com/henfos/BBBFreeRTOS
 
 ----------------------
 
-Port to FreeRTOS v9.0.0
 
