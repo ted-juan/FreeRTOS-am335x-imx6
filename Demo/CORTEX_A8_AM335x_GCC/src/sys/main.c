@@ -38,7 +38,7 @@ static void SYS_Task(void *pvParameters)
     }
 	// Initialise the xLastWakeTime variable with the current time.
 	xLastWakeTime = xTaskGetTickCount();
-	printf("task1\n");
+	printf("start task1\n");
 
 	while(1)
 	{

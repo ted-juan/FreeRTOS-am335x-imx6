@@ -14,7 +14,7 @@
 #include "intc.h"
 
 void SYS_Unhandle_Irq(SYS_DEVICE *dev);
-void SYS_IRQ_Handler(void);
+void vSYS_IRQ_Handler(void);
 void DATA_ABORT ( void ) __attribute__((naked));
 
 /*define function pointer array*/
@@ -97,6 +97,8 @@ void vSYS_IRQ_Handler(void)
 {
 	INT32U irq_num, irq_set, irq_index, mask;
 
+	//__asm volatile("push {lr}	\n\t");
+
 	while ((irq_num = (*(REG32(MPU_INTC + INTCPS_SIR_IRQ))) & 0x7f ) !=0 )
 	{
 		irq_set = irq_num >> 5;
@@ -106,11 +108,14 @@ void vSYS_IRQ_Handler(void)
 		if (( (1<<irq_index) & (~mask))==0)
 			break;
 
-        (*(REG32(MPU_INTC + INTCPS_CONTROL))) = 0x01; //NEWIRQ
-
 		/*do isr routing*/
 		SYS_Irq[irq_num](SYS_IrqDev[irq_num]);
+        (*(REG32(MPU_INTC + INTCPS_CONTROL))) = 0x01; //NEWIRQ
+
+		if (irq_num == INTC_DMTIMER2) /* break for context switch */
+			break;
 	}
+ 	//__asm volatile("pop {lr}	\n\t");
 }
 
 /*

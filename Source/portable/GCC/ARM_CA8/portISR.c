@@ -71,7 +71,6 @@ volatile unsigned long ulCriticalNesting = 9999UL;
 /* ISR handler to decide which function to call based on incoming interrupt */
 extern void vSYS_IRQ_Handler( void );
 
-void vTickISR ( void ) __attribute__((naked));
 void vIRQHandler ( void ) __attribute__((naked));
 
 /* ISR to handle manual context switches (from a call to taskYIELD()). */
@@ -95,7 +94,10 @@ void vPortISRStartFirstTask( void )
 /* Read the incoming interrupt and then jump to the appropriate ISR */
 void vIRQHandler ( void ){
 	portSAVE_CONTEXT();
+
+   //__asm volatile ("bl vTickISR");
 	vSYS_IRQ_Handler();
+
 	portRESTORE_CONTEXT();
 }
 
@@ -123,28 +125,6 @@ void vPortYieldProcessor( void )
 
 	/* Restore the context of the new task. */
 	portRESTORE_CONTEXT();
-}
-/*-----------------------------------------------------------*/
-/*
- * The ISR used for the scheduler tick.
- */
-void vTickISR( void )
-{
-
-	/* Save LR. Make sure we will be able to go back to the IRQ handler */
-	__asm volatile("push {lr}	\n\t");
-
-    /* Increment the RTOS tick count, then look for the highest priority
-	task that is ready to run. */
-	__asm volatile("bl xTaskIncrementTick");
-
-	#if configUSE_PREEMPTION == 1
-		__asm volatile("bl vTaskSwitchContext");
-	#endif
-
-
- 	__asm volatile("pop {lr}	\n\t");
-
 }
 /*-----------------------------------------------------------*/
 
