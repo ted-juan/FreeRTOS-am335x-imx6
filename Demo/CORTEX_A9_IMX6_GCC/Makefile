@@ -56,8 +56,8 @@ USE_THUMB_MODE=NO
 DEBUG=-g
 OPTIM=-O0
 RUN_MODE=RUN_FROM_RAM
-LDSCRIPT=omap3-ram.ld
-TEXT_BASE = 0x80300000
+LDSCRIPT=imx6-ram.ld
+TEXT_BASE = 0x10300000
 
 # use this to print debug messages for task interleaving
 DBGMSG=NO
