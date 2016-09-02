@@ -75,11 +75,14 @@ CRT0=$(COMMON_SOURCE_DIR)/sys/boot.s
 #
 # CFLAGS common to both the THUMB and ARM mode builds
 
-CFLAGS=$(WARNINGS) -g -D DEBUG -D $(RUN_MODE) -D CORTEX_A8_AM335X_GCC \
+CFLAGS=$(WARNINGS) -g -D DEBUG -D $(RUN_MODE) -D CORTEX_A9_IMX6 \
+	    -I./ \
 	    -I$(COMMON_SOURCE_DIR)/include \
-        -I../../Source/include \
+        -I$(RTOS_SOURCE_DIR)/include \
+		-I$(RTOS_SOURCE_DIR)/portable/GCC/ARM_CA9 \
 		-I../Common/include $(DEBUG) \
-		-mcpu=cortex-a8 -T$(LDSCRIPT) -Ttext $(TEXT_BASE) \
+		-march=armv7-a -mcpu=cortex-a9 -mtune=cortex-a9 -mfpu=neon -mfloat-abi=softfp \
+		-T$(LDSCRIPT) -Ttext $(TEXT_BASE) \
 	 $(OPTIM) -fomit-frame-pointer -fno-strict-aliasing -mno-unaligned-access
 
 ifeq ($(USE_THUMB_MODE),YES)
@@ -94,9 +97,9 @@ LINKER_FLAGS=-Xlinker -o$(TARGET).elf -Xlinker -M -Xlinker -Map=$(TARGET).map
 #
 THUMB_SRC = \
 $(COMMON_SOURCE_DIR)/sys/main.c \
-$(COMMON_SOURCE_DIR)/driver/am335x/serial.c \
-$(COMMON_SOURCE_DIR)/driver/am335x/am335x_intc.c \
-$(COMMON_SOURCE_DIR)/driver/am335x/am335x_timer.c \
+$(COMMON_SOURCE_DIR)/driver/imx6/imx6_uart.c \
+$(COMMON_SOURCE_DIR)/driver/imx6/imx6_intc.c \
+$(COMMON_SOURCE_DIR)/driver/imx6/imx6_timer.c \
 $(COMMON_SOURCE_DIR)/sys/syscalls.c \
 $(COMMON_SOURCE_DIR)/sys/printf-stdarg.c \
 $(DEMO_SOURCE_DIR)/integer.c \
@@ -110,12 +113,13 @@ $(RTOS_SOURCE_DIR)/queue.c \
 $(RTOS_SOURCE_DIR)/list.c \
 $(RTOS_SOURCE_DIR)/timers.c \
 $(RTOS_SOURCE_DIR)/portable/MemMang/heap_2.c \
-$(RTOS_SOURCE_DIR)/portable/GCC/ARM_CA8/port.c
+$(RTOS_SOURCE_DIR)/portable/GCC/ARM_CA9/port.c \
+$(RTOS_SOURCE_DIR)/portable/GCC/ARM_CA9/portASM.S 
 
 #
 # Source files that must be built to ARM mode.
 #
-ARM_SRC = $(RTOS_SOURCE_DIR)/portable/GCC/ARM_CA8/portISR.c \
+ARM_SRC = 
 #
 # Define all object files.
 #

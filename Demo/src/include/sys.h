@@ -274,4 +274,39 @@ extern int sys_printf(const char *format, ...);
 #define OS_ENTER_CRITICAL()		vPortEnterCritical();
 #define OS_EXIT_CRITICAL()		vPortExitCritical();
 
+/*
+ * Task stack size, priority and related configuration
+ */
+
+#define SYS_ISR_STK_SIZE 	    512
+
+/*System timer task */
+#define TIMER_TASK_PRIO     	4
+#define TIMER_TASK_STK_SIZE 	4096
+
+/*System Event task, handle device's event from ISR */
+#define EVENT_TASK_PRIO      	6
+#define EVENT_TASK_STK_SIZE  	512
+#define EVENT_Q_MSG          	5
+
+/*System task */
+#define SYS_TASK_PRIO      	    7
+#define SYS_TASK_STK_SIZE  	    2048
+
+#define ___swab16(x) \
+                    ((unsigned int)( \
+                                (((unsigned int)(x) & (unsigned int)0x00ffU) << 8) | \
+                                (((unsigned int)(x) & (unsigned int)0xff00U) >> 8) ))
+#define ___swab32(x) \
+                    ((unsigned long)( \
+                                (((unsigned long)(x) & (unsigned long)0x000000ffUL) << 24) | \
+                                (((unsigned long)(x) & (unsigned long)0x0000ff00UL) <<  8) | \
+                                (((unsigned long)(x) & (unsigned long)0x00ff0000UL) >>  8) | \
+                                (((unsigned long)(x) & (unsigned long)0xff000000UL) >> 24) ))
+
+#define htonl(x) ___swab32(x)
+#define ntohl(x) ___swab32(x)
+#define htons(x) ___swab16(x)
+#define ntohs(x) ___swab16(x)
+
 #endif /* #ifndef _SYS_H */

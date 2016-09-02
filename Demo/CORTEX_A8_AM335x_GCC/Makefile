@@ -75,9 +75,11 @@ CRT0=$(COMMON_SOURCE_DIR)/sys/boot.s
 #
 # CFLAGS common to both the THUMB and ARM mode builds
 
-CFLAGS=$(WARNINGS) -g -D DEBUG -D $(RUN_MODE) -D CORTEX_A8_AM335X_GCC \
+CFLAGS=$(WARNINGS) -g -D DEBUG -D $(RUN_MODE) -D CORTEX_A8_AM335X \
+	    -I./ \
 	    -I$(COMMON_SOURCE_DIR)/include \
-        -I../../Source/include \
+        -I$(RTOS_SOURCE_DIR)/include \
+		-I$(RTOS_SOURCE_DIR)/portable/GCC/ARM_CA8 \
 		-I../Common/include $(DEBUG) \
 		-mcpu=cortex-a8 -T$(LDSCRIPT) -Ttext $(TEXT_BASE) \
 	 $(OPTIM) -fomit-frame-pointer -fno-strict-aliasing -mno-unaligned-access
