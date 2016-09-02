@@ -83,7 +83,7 @@ CFLAGS=$(WARNINGS) -g -D DEBUG -D $(RUN_MODE) -D CORTEX_A9_IMX6 \
 		-I../Common/include $(DEBUG) \
 		-march=armv7-a -mcpu=cortex-a9 -mtune=cortex-a9 -mfpu=neon -mfloat-abi=softfp \
 		-T$(LDSCRIPT) -Ttext $(TEXT_BASE) \
-	 $(OPTIM) -fomit-frame-pointer -fno-strict-aliasing -mno-unaligned-access
+	    $(OPTIM) -fomit-frame-pointer -fno-strict-aliasing -mno-unaligned-access
 
 ifeq ($(USE_THUMB_MODE),YES)
 	CFLAGS += -mthumb-interwork -D THUMB_INTERWORK
@@ -100,6 +100,7 @@ $(COMMON_SOURCE_DIR)/sys/main.c \
 $(COMMON_SOURCE_DIR)/driver/imx6/imx6_uart.c \
 $(COMMON_SOURCE_DIR)/driver/imx6/imx6_intc.c \
 $(COMMON_SOURCE_DIR)/driver/imx6/imx6_timer.c \
+$(COMMON_SOURCE_DIR)/driver/imx6/imx6_platform.c \
 $(COMMON_SOURCE_DIR)/sys/syscalls.c \
 $(COMMON_SOURCE_DIR)/sys/printf-stdarg.c \
 $(DEMO_SOURCE_DIR)/integer.c \
@@ -113,13 +114,14 @@ $(RTOS_SOURCE_DIR)/queue.c \
 $(RTOS_SOURCE_DIR)/list.c \
 $(RTOS_SOURCE_DIR)/timers.c \
 $(RTOS_SOURCE_DIR)/portable/MemMang/heap_2.c \
-$(RTOS_SOURCE_DIR)/portable/GCC/ARM_CA9/port.c \
-$(RTOS_SOURCE_DIR)/portable/GCC/ARM_CA9/portASM.S 
+$(RTOS_SOURCE_DIR)/portable/GCC/ARM_CA9/port.c 
 
 #
 # Source files that must be built to ARM mode.
 #
-ARM_SRC = 
+ASM_SRC = \
+$(RTOS_SOURCE_DIR)/portable/GCC/ARM_CA9/portASM.S 
+
 #
 # Define all object files.
 #
@@ -138,8 +140,8 @@ all : $(TARGET).elf
 $(TARGET).hex : $(TARGET).elf
 	$(OBJCOPY) $(TARGET).elf -O ihex $(TARGET).hex
 
-$(TARGET).elf : $(ARM_OBJ) $(THUMB_OBJ) $(CRT0) Makefile
-	$(CC) $(CFLAGS) $(ARM_OBJ) $(THUMB_OBJ) -nostartfiles $(CRT0) $(LINKER_FLAGS)
+$(TARGET).elf : $(ARM_OBJ) $(THUMB_OBJ) $(CRT0) $(ASM_SRC) Makefile
+	$(CC) $(CFLAGS) $(ARM_OBJ) $(THUMB_OBJ) $(ASM_SRC) -nostartfiles $(CRT0) $(LINKER_FLAGS)
 
 $(THUMB_OBJ) : %.o : %.c $(LDSCRIPT) Makefile
 	$(CC) -g -c $(THUMB_FLAGS) $(CFLAGS) $< -o $@

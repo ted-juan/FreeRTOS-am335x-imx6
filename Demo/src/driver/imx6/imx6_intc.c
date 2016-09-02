@@ -14,7 +14,7 @@
 #include "intc.h"
 
 void SYS_Unhandle_Irq(SYS_DEVICE *dev);
-void vSYS_IRQ_Handler(void);
+void vApplicationIRQHandler(void);
 void DATA_ABORT ( void ) __attribute__((naked));
 
 /*define function pointer array*/
@@ -79,7 +79,7 @@ INT32S SYS_Install_Handler(SYS_DEVICE *dev, INT32U location, void (*handler)(SYS
 
 /*
 *============================================================================
-*   Public Function: vSYS_IRQ_Handler
+*   Public Function: vApplicationIRQHandler
 *
 *       Interrupt service routing, call by vSYS_IRQHandler (portISR.c)
 *
@@ -93,7 +93,7 @@ INT32S SYS_Install_Handler(SYS_DEVICE *dev, INT32U location, void (*handler)(SYS
 *============================================================================
 */
 
-void vSYS_IRQ_Handler(void)
+void vApplicationIRQHandler(void)
 {
 	INT32U irq_num, irq_set, irq_index, mask;
 

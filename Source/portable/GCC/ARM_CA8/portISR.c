@@ -74,7 +74,7 @@ extern void vSYS_IRQ_Handler( void );
 void vIRQHandler ( void ) __attribute__((naked));
 
 /* ISR to handle manual context switches (from a call to taskYIELD()). */
-void vPortYieldProcessor( void ) __attribute__((interrupt("SWI"), naked));
+void FreeRTOS_SWI_Handler( void ) __attribute__((interrupt("SWI"), naked));
 
 /*
  * The scheduler can only be started from ARM mode, hence the inclusion of this
@@ -92,11 +92,10 @@ void vPortISRStartFirstTask( void )
 /*-----------------------------------------------------------*/
 
 /* Read the incoming interrupt and then jump to the appropriate ISR */
-void vIRQHandler ( void ){
+void FreeRTOS_IRQ_Handler ( void ){
 	portSAVE_CONTEXT();
 
-   //__asm volatile ("bl vTickISR");
-	vSYS_IRQ_Handler();
+    vApplicationIRQHandler();
 
 	portRESTORE_CONTEXT();
 }
@@ -108,9 +107,9 @@ void vIRQHandler ( void ){
  * When a context switch is performed from the task level the saved task
  * context is made to look as if it occurred from within the tick ISR.  This
  * way the same restore context function can be used when restoring the context
- * saved from the ISR or that saved from a call to vPortYieldProcessor.
+ * saved from the ISR or that saved from a call to FreeRTOS_SWI_Handler.
  */
-void vPortYieldProcessor( void )
+void FreeRTOS_SWI_Handler(void )
 {
 	/* Within an IRQ ISR the link register has an offset from the true return
 	address, but an SWI ISR does not.  Add the offset manually so the same

@@ -16,7 +16,7 @@
 	.extern __data_end__
 	.extern __data+beg_src__
 
-	.extern vIRQHandler
+	.extern FreeRTOS_IRQ_Handler
 	.extern vPortYieldProcessor
 	.extern SYS_Data_Abort
 
@@ -162,10 +162,10 @@ _vector_table:
 
 
 _undf:  .word __undf                  /* undefined				*/
-_swi:   .word vPortYieldProcessor     /* SWI					*/
+_swi:   .word FreeRTOS_SWI_Handler    /* SWI					*/
 _pabt:  .word __pabt                  /* program abort			*/
 _dabt:  .word SYS_Data_Abort		  /* data abort				*/
-_irq:   .word vIRQHandler
+_irq:   .word FreeRTOS_IRQ_Handler
 _fiq:   .word __swi                   /* FIQ					*/
 
 __undf: b     .                         /* undefined				*/
