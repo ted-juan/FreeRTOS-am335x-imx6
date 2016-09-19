@@ -57,7 +57,7 @@ static void  SYS_HwInit(void)
 	/* Enabling the UART clocks */
 	(*(REG32(SERIAL_CLK_CTRL))) =0x2;
 
-    init_serial(SERIAL_BASE);
+    serial_init();
 	//test_printf();
 }
 
@@ -109,7 +109,7 @@ int main( void )
 
     printf("\n\n");
     printf("==========================================\n");
-    printf("TI AM335X - FreeRTOS\n");
+    printf("%s - FreeRTOS\n",configSYS_PLATFORM_NAME);
     printf("==========================================\n");
     printf("System running!....\n");
 

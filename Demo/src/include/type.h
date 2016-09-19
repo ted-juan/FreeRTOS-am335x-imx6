@@ -15,6 +15,7 @@ typedef INT32U              OS_STK;
 typedef  long long       INT64S;
 typedef unsigned long long  INT64U;
 
+#define u32 INT32U
 
 #define BYTE                INT8S        
 #define UBYTE               INT8U       

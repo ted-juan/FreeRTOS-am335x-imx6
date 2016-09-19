@@ -116,6 +116,7 @@
  * setting configMAX_API_CALL_INTERRUPT_PRIORITY 255 represents the lowest
  * priority.
  */
+#define configSYS_PLATFORM_NAME                 "Freescale imx6 board"
 #define configMAX_API_CALL_INTERRUPT_PRIORITY	18
 
 #define configCPU_CLOCK_HZ						100000000UL

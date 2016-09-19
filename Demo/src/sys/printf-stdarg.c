@@ -25,8 +25,8 @@
 
 */
 
-extern void serial_putchar(const char c);
-#define putchar serial_putchar
+extern void serial_putc(const char c);
+#define putchar serial_putc
 
 #include "FreeRTOS.h"
 #include <stdarg.h>

@@ -1,5 +1,5 @@
-#ifndef omap3_h
-#define omap3_h
+#ifndef _imx6_h
+#define _imx6_h
 /*******************************************************************************
 omap3h - Register definitions for TI BeagleBoard C4
 
@@ -18,6 +18,9 @@ Created by Markos Chandras <chandram@cs.man.ac.uk>
 
 *******************************************************************************/
 
+
+#include "mx6.h"
+
 extern int checkInt;
 extern short channel1_flag;
 extern short channel2_flag;
@@ -26,6 +29,10 @@ extern short channel3_flag;
 #define REG32 (volatile unsigned int*)
 #define FALSE 0
 #define TRUE 1
+
+#define SERIAL_BAUDRATE			115200
+
+void serial_init(void);
 
 /*##############################################################################
 ## MISC
@@ -367,68 +374,12 @@ extern short channel3_flag;
 #define PIN30					(0x1 << 30)
 #define PIN31					(0x1 << 31)
 
-/* Serial Configuration (UART 0)*/
-/* modified */
-#define UART0_BASE 		    0x44E09000
-#define UART1_BASE 		    0x48022000
-#define UART2_BASE 		    0x48024000
-#define UART3_BASE 		    0x481A6000
-#define UART4_BASE		    0x481A8000
-#define UART5_BASE		    0x481AA000
 
-#define SERIAL_BASE                 UART1_BASE
+#define SERIAL_BASE            UART1_BASE_ADDR
 
-/* Serial Offsets */
-#define DLL_REG					0x000
-#define RHR_REG					0x000
-#define THR_REG					0x000
-#define DLH_REG					0x004
-#define IER_REG					0x004
-#define IIR_REG					0x008
-#define FCR_REG					0x008
-#define EFR_REG					0x008
-#define LCR_REG					0x00C
-#define MCR_REG					0x010
-#define XON1_ADDR1_REG			0x010
-#define LSR_REG					0x014
-#define XON2_ADDR2_REG			0x014
-#define MSR_REG					0x018
-#define TCR_REG					0x018
-#define XOFF1_REG				0x018
-#define SPR_REG					0x01C
-#define TLR_REG					0x01C
-#define XOFF2_REG				0x01C
-#define MDR1_REG				0x020
-#define MDR2_REG				0x024
-#define SFLSR_REG				0x028
-#define TXFLL_REG				0x028
-#define RESUME_REG				0x02C
-#define TXFLH_REG				0x02C
-#define SFREGL_REG				0x030
-#define RXFLL_REG				0x030
-#define SFREGH_REG				0x034
-#define RXFLH_REG				0x034
-#define UASR_REG				0x038
-#define BLR_REG					0x038
-#define ACREG_REG				0x03C
-#define SCR_REG					0x040
-#define SSR_REG					0x044
-#define EBLR_REG				0x048
-#define MVR_REG					0x050
-#define SYSC_REG				0x054
-#define SYSS_REG				0x058
-#define WER_REG					0x05C
-#define CFPS_REG				0x060
 
 #define PRCM_REG                0x44e00000
 #define CM_PER_GPIO1_CLKCTRL    0xAC
-
-#define UART0_CLK_CTRL	(CM_WKUP + 0xB4)
-#define UART1_CLK_CTRL	(PRCM_REG + 0x6C)
-#define UART2_CLK_CTRL	(PRCM_REG + 0x70)
-#define UART3_CLK_CTRL	(PRCM_REG + 0x74)
-#define UART4_CLK_CTRL	(PRCM_REG + 0x78)
-
 #define SERIAL_CLK_CTRL    UART1_CLK_CTRL
 
 #endif /* omap3_h */

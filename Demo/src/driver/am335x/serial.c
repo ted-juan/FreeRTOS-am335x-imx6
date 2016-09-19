@@ -42,8 +42,3 @@ void serial_putsn (unsigned int base, const char *s, int n)
 }
 
 
-void serial_putchar(const char c)
-{
-	while (((*(REG32(SERIAL_BASE+0x14))) & LSR_THRE) == 0);
-	(*(REG32(SERIAL_BASE+0x00))) = c;
-}
